@@ -18,6 +18,11 @@ regardless of which one you pick. Whichever you use, seed the pool with wECX and
 in a ratio matching your intended ECX price, and keep the LP tokens somewhere you can prove are
 locked — see [wecx-mint](../1-make-wrapped-ecx/wecx-mint/)'s notes on publishing a lock proof.
 
+It doesn't matter much which of these you pick, since most wallets route swaps through
+**[Jupiter](https://jup.ag/)**, which aggregates liquidity across all of them anyway. We should
+probably point users at Jupiter directly rather than at a wallet's built-in swap: most wallets take
+a cut on top of the swap when you trade through them, which you avoid by trading on Jupiter directly.
+
 ## Estimating price impact beforehand
 
 [amm-calculator.svelte](amm-calculator.svelte) is a standalone constant-product (`x * y = k`)

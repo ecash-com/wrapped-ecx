@@ -17,3 +17,10 @@ the token itself, not the wrap/unwrap bridge (step 2) or the liquidity pool (ste
 
 Either approach produces the same thing: an SPL mint address that step 2 (the bridge) mints to
 and burns from, and that step 3 (the AMM pool) pairs against USD.
+
+## Already minted
+
+The wbECX mint address is
+[`EVHqNdzjCupKi4rQkbuYw52sa1m8A7jeUAMP23S9AVVq`](https://solscan.io/token/EVHqNdzjCupKi4rQkbuYw52sa1m8A7jeUAMP23S9AVVq).
+The first 10,000 wbECX were created in
+[this transaction](https://solscan.io/tx/2mBvieMaTmAxuNbGm9aJwP69qVwrLax1krCfapP9vUjywA74yT8icE44NAYntPH9xXDfwTzf5hPanB2bxZPJezXU).

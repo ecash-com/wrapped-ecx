@@ -1,0 +1,6 @@
+node_modules/
+keys/
+.env
+mint-info.json
+pool-info.json
+lock-info.json

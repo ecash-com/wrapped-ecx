@@ -8,15 +8,21 @@ by this point you should already have the wECX mint (step 1) and a working wrap/
 
 No script here does this for you — use one of these hosted tools instead:
 
-- **[Orca](https://www.orca.so/create-pool)** — the one we've actually used.
+- **[Orca](https://www.orca.so/create-pool)** — the one we've actually used. Raydium charges
+  roughly 10x more to create a pool, which is why we didn't go with it for waECX.
 - **[Raydium (CLMM)](https://raydium.io/clmm/create-pool/)** or
   **[Meteora (DLMM)](https://www.meteora.ag/create/dlmm/standard)** — untested alternatives, in
   case Orca doesn't fit (e.g. different fee tiers or concentrated-liquidity behavior).
 
-All three are constant-product/concentrated-liquidity AMMs, so the pricing math below applies
-regardless of which one you pick. Whichever you use, seed the pool with wECX and USD (or USDT/USDC)
-in a ratio matching your intended ECX price, and keep the LP tokens somewhere you can prove are
-locked — see [wecx-mint](../1-make-wrapped-ecx/wecx-mint/)'s notes on publishing a lock proof.
+All three default to concentrated-liquidity pools (a price range you set), but the plan here is a
+plain constant-product (CPMM) pool — full range, always tradeable, no range management. On Orca
+that's the **full-range / "Splash Pool"** option at pool creation, not the default concentrated
+range; check for the equivalent full-range option if you use Raydium or Meteora instead. The
+pricing math below assumes full range.
+
+Whichever you use, seed the pool with wECX and USD (or USDT/USDC) in a ratio matching your
+intended ECX price, and keep the LP tokens somewhere you can prove are locked — see
+[wecx-mint](../1-make-wrapped-ecx/wecx-mint/)'s notes on publishing a lock proof.
 
 It doesn't matter much which of these you pick, since most wallets route swaps through
 **[Jupiter](https://jup.ag/)**, which aggregates liquidity across all of them anyway. We should

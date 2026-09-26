@@ -59,6 +59,10 @@ inspection (`address`, `balance`, `utxos`, `sync`), manual sends
 - This is custodial software: whoever holds `WALLET_MNEMONIC` and
   `SOLANA_KEYPAIR` controls the funds in both wallets. Treat both as you
   would any hot wallet key.
+- Not built yet: a cap on how much of total supply can be unwrapped per
+  window (e.g. 10% per week), and splitting payout authority across
+  multiple servers/keys (multisig) so no single one can drain the treasury.
+  Both were flagged as needed guardrails but aren't enforced by this code.
 
 ## Development
 

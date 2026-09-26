@@ -26,6 +26,9 @@ pnpm dev                # http://localhost:5173
   safety gates on the backend side.
 - No secrets live in this app — it only holds `BACKEND_URL` and proxies
   everything else to the backend.
+- Known issue: scanning the Solana Pay QR code directly with the Phantom or
+  Solflare in-app scanner doesn't work. Scanning it with the phone's regular
+  camera app, or tapping it, works fine.
 
 ## License
 

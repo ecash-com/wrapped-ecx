@@ -2,14 +2,14 @@ const STORAGE_KEY = 'displayUnit';
 
 export type Unit = 'main' | 'smallest';
 
-const MAIN_TICKER = 'ECX';
+const MAIN_TICKER = 'bECX';
 const SMALLEST_TICKER = 'szats';
 
 function readInitialUnit(): Unit {
 	try {
-		return localStorage.getItem(STORAGE_KEY) === 'main' ? 'main' : 'smallest';
+		return localStorage.getItem(STORAGE_KEY) === 'smallest' ? 'smallest' : 'main';
 	} catch {
-		return 'smallest';
+		return 'main';
 	}
 }
 
@@ -33,6 +33,12 @@ export function toggleUnit() {
 // decimals vary by mint and "smallest unit" isn't a meaningful toggle for it the way sats/szats is.
 export function ecxTicker(): string {
 	return unit === 'smallest' ? SMALLEST_TICKER : MAIN_TICKER;
+}
+
+// Asset name for the token pill: same as the ticker, but spells out that szats are just a
+// different view of bECX rather than a separate asset.
+export function ecxAssetLabel(): string {
+	return unit === 'smallest' ? `${MAIN_TICKER} (in ${SMALLEST_TICKER})` : MAIN_TICKER;
 }
 
 // Formats an ECX amount given in main units (ECX) for display, honoring the current unit

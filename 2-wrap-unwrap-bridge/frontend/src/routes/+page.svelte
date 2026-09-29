@@ -9,6 +9,7 @@
 	} from '$lib/orderHistory';
 	import {
 		ecxTicker,
+		ecxAssetLabel,
 		presentAmount,
 		presentSatAmount,
 		parseDisplayAmount,
@@ -323,7 +324,8 @@
 					<button
 						onclick={() => direction !== option.value && flip()}
 						aria-pressed={direction === option.value}
-						class="rounded-lg py-2 text-sm font-semibold transition-colors {direction === option.value
+						class="rounded-lg py-2 text-sm font-semibold transition-colors {direction ===
+						option.value
 							? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-700 dark:text-white'
 							: 'text-zinc-500 hover:text-zinc-900 dark:hover:text-white'}"
 					>
@@ -358,10 +360,12 @@
 						/>
 						<div class="flex shrink-0 flex-col items-end gap-1">
 							<span
-								class="flex items-center gap-2 rounded-full bg-amber-500/15 px-3 py-2 text-lg font-bold text-amber-600 dark:text-amber-400"
+								class="flex items-center gap-2 rounded-full bg-amber-500/15 py-1.5 pr-4 pl-2 font-bold text-amber-600 dark:text-amber-400"
 							>
-								ε
-								<span class="text-sm font-semibold text-zinc-900 dark:text-white">{ecxTicker()}</span>
+								<img src="/beta_logo_vector.svg" alt="" class="h-9 w-9" />
+								<span class="text-sm font-semibold text-zinc-900 dark:text-white"
+									>{ecxAssetLabel()}</span
+								>
 							</span>
 							<a
 								href="https://explorer.ecash.com"
@@ -396,10 +400,10 @@
 						/>
 						<div class="flex shrink-0 flex-col items-end gap-1">
 							<span
-								class="flex items-center gap-2 rounded-full bg-violet-500/15 px-3 py-2 text-lg font-bold text-violet-600 dark:text-violet-400"
+								class="flex items-center gap-2 rounded-full bg-violet-500/15 py-1.5 pr-4 pl-2 font-bold text-violet-600 dark:text-violet-400"
 							>
-								◎
-								<span class="text-sm font-semibold text-zinc-900 dark:text-white">wbECX</span>
+								<img src="/wbecx-logo.svg" alt="" class="h-9 w-9" />
+								<span class="text-sm font-semibold text-zinc-900 dark:text-white">wbECX (Sol)</span>
 							</span>
 							<a
 								href="https://solscan.io/token/EVHqNdzjCupKi4rQkbuYw52sa1m8A7jeUAMP23S9AVVq"
@@ -455,10 +459,10 @@
 						</div>
 						<div class="flex shrink-0 flex-col items-end gap-1">
 							<span
-								class="flex items-center gap-2 rounded-full bg-violet-500/15 px-3 py-2 text-lg font-bold text-violet-600 dark:text-violet-400"
+								class="flex items-center gap-2 rounded-full bg-violet-500/15 py-1.5 pr-4 pl-2 font-bold text-violet-600 dark:text-violet-400"
 							>
-								◎
-								<span class="text-sm font-semibold text-zinc-900 dark:text-white">wbECX</span>
+								<img src="/wbecx-logo.svg" alt="" class="h-9 w-9" />
+								<span class="text-sm font-semibold text-zinc-900 dark:text-white">wbECX (Sol)</span>
 							</span>
 							<a
 								href="https://solscan.io/token/EVHqNdzjCupKi4rQkbuYw52sa1m8A7jeUAMP23S9AVVq"
@@ -490,10 +494,12 @@
 						</div>
 						<div class="flex shrink-0 flex-col items-end gap-1">
 							<span
-								class="flex items-center gap-2 rounded-full bg-amber-500/15 px-3 py-2 text-lg font-bold text-amber-600 dark:text-amber-400"
+								class="flex items-center gap-2 rounded-full bg-amber-500/15 py-1.5 pr-4 pl-2 font-bold text-amber-600 dark:text-amber-400"
 							>
-								ε
-								<span class="text-sm font-semibold text-zinc-900 dark:text-white">{ecxTicker()}</span>
+								<img src="/beta_logo_vector.svg" alt="" class="h-9 w-9" />
+								<span class="text-sm font-semibold text-zinc-900 dark:text-white"
+									>{ecxAssetLabel()}</span
+								>
 							</span>
 							<a
 								href="https://explorer.ecash.com"
@@ -546,9 +552,7 @@
 			class="mt-3 rounded-xl bg-white p-4 ring-1 ring-black/5 dark:bg-zinc-900 dark:ring-white/5"
 		>
 			<label for="recipient" class="mb-2 block text-xs font-medium text-zinc-500">
-				{direction === 'pegin'
-					? 'Receive wbECX (Solana) at'
-					: `Receive ${ecxTicker()} (betanet) at`}
+				{direction === 'pegin' ? 'Receive wbECX (Sol) at' : `Receive ${ecxTicker()} (betanet) at`}
 			</label>
 			<input
 				id="recipient"

@@ -352,12 +352,21 @@
 								? 'text-red-600 dark:text-red-400'
 								: 'text-zinc-900 dark:text-white'} {quoting ? 'opacity-60' : ''}"
 						/>
-						<span
-							class="flex shrink-0 items-center gap-2 rounded-full bg-red-500/15 px-3 py-2 text-lg font-bold text-red-600 dark:text-red-400"
-						>
-							ε
-							<span class="text-sm font-semibold text-zinc-900 dark:text-white">{ecxTicker()}</span>
-						</span>
+						<div class="flex shrink-0 flex-col items-end gap-1">
+							<span
+								class="flex items-center gap-2 rounded-full bg-red-500/15 px-3 py-2 text-lg font-bold text-red-600 dark:text-red-400"
+							>
+								ε
+								<span class="text-sm font-semibold text-zinc-900 dark:text-white">{ecxTicker()}</span>
+							</span>
+							<a
+								href="https://explorer.ecash.com"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="text-[10px] text-zinc-500 underline-offset-2 hover:text-zinc-900 hover:underline dark:hover:text-white"
+								>View on Explorer ↗</a
+							>
+						</div>
 					</div>
 					{#if belowMinimum}
 						<div class="mt-2 text-xs font-medium text-red-600 dark:text-red-400">
@@ -381,12 +390,21 @@
 								? 'opacity-60'
 								: ''}"
 						/>
-						<span
-							class="flex shrink-0 items-center gap-2 rounded-full bg-violet-500/15 px-3 py-2 text-lg font-bold text-violet-600 dark:text-violet-400"
-						>
-							◎
-							<span class="text-sm font-semibold text-zinc-900 dark:text-white">wECX</span>
-						</span>
+						<div class="flex shrink-0 flex-col items-end gap-1">
+							<span
+								class="flex items-center gap-2 rounded-full bg-violet-500/15 px-3 py-2 text-lg font-bold text-violet-600 dark:text-violet-400"
+							>
+								◎
+								<span class="text-sm font-semibold text-zinc-900 dark:text-white">wECX</span>
+							</span>
+							<a
+								href="https://solscan.io/token/EVHqNdzjCupKi4rQkbuYw52sa1m8A7jeUAMP23S9AVVq"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="text-[10px] text-zinc-500 underline-offset-2 hover:text-zinc-900 hover:underline dark:hover:text-white"
+								>View on Solscan ↗</a
+							>
+						</div>
 					</div>
 				{/if}
 			</div>
@@ -431,12 +449,21 @@
 						>
 							{amountOutDisplay || '0.00'}
 						</div>
-						<span
-							class="flex shrink-0 items-center gap-2 rounded-full bg-violet-500/15 px-3 py-2 text-lg font-bold text-violet-600 dark:text-violet-400"
-						>
-							◎
-							<span class="text-sm font-semibold text-zinc-900 dark:text-white">wECX</span>
-						</span>
+						<div class="flex shrink-0 flex-col items-end gap-1">
+							<span
+								class="flex items-center gap-2 rounded-full bg-violet-500/15 px-3 py-2 text-lg font-bold text-violet-600 dark:text-violet-400"
+							>
+								◎
+								<span class="text-sm font-semibold text-zinc-900 dark:text-white">wECX</span>
+							</span>
+							<a
+								href="https://solscan.io/token/EVHqNdzjCupKi4rQkbuYw52sa1m8A7jeUAMP23S9AVVq"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="text-[10px] text-zinc-500 underline-offset-2 hover:text-zinc-900 hover:underline dark:hover:text-white"
+								>View on Solscan ↗</a
+							>
+						</div>
 					</div>
 				{:else}
 					<div class="mb-2 flex items-center justify-between">
@@ -457,12 +484,21 @@
 						>
 							{amountOutDisplay || '0.00'}
 						</div>
-						<span
-							class="flex shrink-0 items-center gap-2 rounded-full bg-red-500/15 px-3 py-2 text-lg font-bold text-red-600 dark:text-red-400"
-						>
-							ε
-							<span class="text-sm font-semibold text-zinc-900 dark:text-white">{ecxTicker()}</span>
-						</span>
+						<div class="flex shrink-0 flex-col items-end gap-1">
+							<span
+								class="flex items-center gap-2 rounded-full bg-red-500/15 px-3 py-2 text-lg font-bold text-red-600 dark:text-red-400"
+							>
+								ε
+								<span class="text-sm font-semibold text-zinc-900 dark:text-white">{ecxTicker()}</span>
+							</span>
+							<a
+								href="https://explorer.ecash.com"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="text-[10px] text-zinc-500 underline-offset-2 hover:text-zinc-900 hover:underline dark:hover:text-white"
+								>View on Explorer ↗</a
+							>
+						</div>
 					</div>
 					{#if belowMinimum}
 						<div class="mt-2 text-xs font-medium text-red-600 dark:text-red-400">

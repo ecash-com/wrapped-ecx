@@ -206,7 +206,7 @@
 			<div class="mb-6 text-center">
 				<h1 class="text-2xl font-bold text-zinc-900 dark:text-white">
 					{presentSatAmount(order.amountInSat)}
-					{ecxTicker()} → {amountOut(order)} wECX
+					{ecxTicker()} → {amountOut(order)} wbECX
 				</h1>
 				<p class="mt-1 font-mono text-xs text-zinc-600">{order.id}</p>
 			</div>
@@ -260,17 +260,17 @@
 					{/if}
 				{:else if order.status === 'deposit_confirmed' || order.status === 'paying_out'}
 					<p class="text-center text-sm text-zinc-700 dark:text-zinc-300">
-						Deposit confirmed — sending your wECX now…
+						Deposit confirmed — sending your wbECX now…
 					</p>
 					{#if canSetRefundAddress}
 						{@render refundAddressForm()}
 					{/if}
 				{:else if order.status === 'paid_out'}
 					<p class="text-center text-sm font-medium text-green-600 dark:text-green-400">
-						wECX sent!
+						wbECX sent!
 					</p>
 					<p class="mt-2 text-center text-xs text-zinc-500">
-						You received {amountOut(order)} wECX at {order.solanaRecipient}
+						You received {amountOut(order)} wbECX at {order.solanaRecipient}
 					</p>
 					{#if order.payoutSignature}
 						<p class="mt-2 truncate text-center font-mono text-[10px] text-zinc-600">

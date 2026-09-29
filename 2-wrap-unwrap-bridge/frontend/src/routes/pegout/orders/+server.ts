@@ -19,7 +19,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		!Number.isInteger(amountInBaseUnits) ||
 		amountInBaseUnits <= 0
 	) {
-		throw error(400, 'amountInBaseUnits must be a positive integer (wECX base units)');
+		throw error(400, 'amountInBaseUnits must be a positive integer (wbECX base units)');
 	}
 	if (typeof ecxRecipient !== 'string' || ecxRecipient.trim() === '') {
 		throw error(400, 'ecxRecipient is required');

@@ -73,7 +73,7 @@
 			reference: order.referencePubkey,
 			amountBaseUnits: order.amountInBaseUnits,
 			decimals: wecxDecimals,
-			label: 'wECX bridge redeem',
+			label: 'wbECX bridge redeem',
 			message: `Redeem order ${order.id}`
 		});
 	});
@@ -148,7 +148,7 @@
 
 			<div class="mb-6 text-center">
 				<h1 class="text-2xl font-bold text-zinc-900 dark:text-white">
-					{amountIn(order)} wECX → {presentSatAmount(order.amountOutSat)}
+					{amountIn(order)} wbECX → {presentSatAmount(order.amountOutSat)}
 					{ecxTicker()}
 				</h1>
 				<p class="mt-1 font-mono text-xs text-zinc-600">{order.id}</p>
@@ -159,7 +159,7 @@
 			>
 				{#if order.status === 'pending'}
 					<p class="mb-4 text-center text-xs text-zinc-500">
-						Send {amountIn(order)} wECX with a Solana Pay-compatible wallet to start redeeming
+						Send {amountIn(order)} wbECX with a Solana Pay-compatible wallet to start redeeming
 					</p>
 					<div class="mb-4 flex justify-center">
 						{#if qrDataUrl}
@@ -238,13 +238,13 @@
 					{/if}
 				{:else if order.status === 'refund_requested' || order.status === 'refunding'}
 					<p class="text-center text-sm text-zinc-700 dark:text-zinc-300">
-						This deposit couldn't be bridged — sending your wECX back…
+						This deposit couldn't be bridged — sending your wbECX back…
 					</p>
 				{:else if order.status === 'refunded'}
 					<p class="text-center text-sm font-medium text-green-600 dark:text-green-400">Refunded</p>
 					{#if order.depositorOwner}
 						<p class="mt-2 text-center text-xs text-zinc-500">
-							Your wECX deposit was sent back to {order.depositorOwner}
+							Your wbECX deposit was sent back to {order.depositorOwner}
 						</p>
 					{/if}
 					{#if order.refundSignature}

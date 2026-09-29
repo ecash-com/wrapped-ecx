@@ -15,6 +15,7 @@
 		formatBaseUnits
 	} from '$lib/units.svelte';
 	import UnitToggle from '$lib/UnitToggle.svelte';
+	import PageTabs from '$lib/PageTabs.svelte';
 
 	type Direction = 'pegin' | 'pegout';
 
@@ -253,30 +254,33 @@
 
 <div class="flex min-h-screen items-center justify-center bg-zinc-50 px-4 py-12 dark:bg-zinc-950">
 	<div class="w-full max-w-md">
+		<PageTabs active="bridge" />
 		<!-- Header -->
 		<div class="relative mb-6 text-center">
-			{#if hasStoredOrders}
-				<a
-					href="/orders"
-					class="absolute top-0 right-0 inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:hover:text-white"
-				>
-					Your orders
-					<svg
-						class="h-3.5 w-3.5"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-						stroke-width="2.5"
+			<div class="absolute top-0 right-0">
+				{#if hasStoredOrders}
+					<a
+						href="/orders"
+						class="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:hover:text-white"
 					>
-						<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-					</svg>
-				</a>
-			{/if}
+						Your orders
+						<svg
+							class="h-3.5 w-3.5"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="2.5"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+						</svg>
+					</a>
+				{/if}
+			</div>
 			<h1 class="text-2xl font-bold text-zinc-900 dark:text-white">Bridge</h1>
 			<p class="mt-1 text-sm text-zinc-500">
 				{direction === 'pegin'
-					? 'Bridge ECX to wECX on Solana'
-					: 'Redeem wECX on Solana back to ECX'}
+					? 'Bridge ECX to wbECX on Solana'
+					: 'Redeem wbECX on Solana back to ECX'}
 			</p>
 		</div>
 
@@ -300,7 +304,7 @@
 			<p class="text-xs leading-relaxed text-yellow-800 dark:text-yellow-300">
 				<span class="font-semibold">Beta warning:</span> This bridge sends real
 				<span class="font-semibold">Betanet eCash</span> and real
-				<span class="font-semibold">wECX on Solana mainnet-beta</span>. Both are real money.
+				<span class="font-semibold">wbECX on Solana mainnet-beta</span>. Both are real money.
 				{#if direction === 'pegout'}
 					Your deposit must be sent from a wallet that supports
 					<span class="font-semibold">Solana Pay</span> (e.g. Phantom, Solflare) via the link/QR on the
@@ -354,7 +358,7 @@
 						/>
 						<div class="flex shrink-0 flex-col items-end gap-1">
 							<span
-								class="flex items-center gap-2 rounded-full bg-red-500/15 px-3 py-2 text-lg font-bold text-red-600 dark:text-red-400"
+								class="flex items-center gap-2 rounded-full bg-amber-500/15 px-3 py-2 text-lg font-bold text-amber-600 dark:text-amber-400"
 							>
 								ε
 								<span class="text-sm font-semibold text-zinc-900 dark:text-white">{ecxTicker()}</span>
@@ -395,7 +399,7 @@
 								class="flex items-center gap-2 rounded-full bg-violet-500/15 px-3 py-2 text-lg font-bold text-violet-600 dark:text-violet-400"
 							>
 								◎
-								<span class="text-sm font-semibold text-zinc-900 dark:text-white">wECX</span>
+								<span class="text-sm font-semibold text-zinc-900 dark:text-white">wbECX</span>
 							</span>
 							<a
 								href="https://solscan.io/token/EVHqNdzjCupKi4rQkbuYw52sa1m8A7jeUAMP23S9AVVq"
@@ -454,7 +458,7 @@
 								class="flex items-center gap-2 rounded-full bg-violet-500/15 px-3 py-2 text-lg font-bold text-violet-600 dark:text-violet-400"
 							>
 								◎
-								<span class="text-sm font-semibold text-zinc-900 dark:text-white">wECX</span>
+								<span class="text-sm font-semibold text-zinc-900 dark:text-white">wbECX</span>
 							</span>
 							<a
 								href="https://solscan.io/token/EVHqNdzjCupKi4rQkbuYw52sa1m8A7jeUAMP23S9AVVq"
@@ -486,7 +490,7 @@
 						</div>
 						<div class="flex shrink-0 flex-col items-end gap-1">
 							<span
-								class="flex items-center gap-2 rounded-full bg-red-500/15 px-3 py-2 text-lg font-bold text-red-600 dark:text-red-400"
+								class="flex items-center gap-2 rounded-full bg-amber-500/15 px-3 py-2 text-lg font-bold text-amber-600 dark:text-amber-400"
 							>
 								ε
 								<span class="text-sm font-semibold text-zinc-900 dark:text-white">{ecxTicker()}</span>
@@ -518,13 +522,13 @@
 					     reading would be off by 8 orders of magnitude). -->
 					{#if direction === 'pegin'}
 						<span
-							>1 ECX = 1 wECX{peginFeeFraction
+							>1 ECX = 1 wbECX{peginFeeFraction
 								? ` (minus ${formatPercent(peginFeeFraction)} fee)`
 								: ''}</span
 						>
 					{:else}
 						<span
-							>1 wECX = 1 {ecxTicker()}{pegoutFeeFraction
+							>1 wbECX = 1 {ecxTicker()}{pegoutFeeFraction
 								? ` (minus ${formatPercent(pegoutFeeFraction)} fee)`
 								: ''}</span
 						>
@@ -543,7 +547,7 @@
 		>
 			<label for="recipient" class="mb-2 block text-xs font-medium text-zinc-500">
 				{direction === 'pegin'
-					? 'Receive wECX (Solana) at'
+					? 'Receive wbECX (Solana) at'
 					: `Receive ${ecxTicker()} (betanet) at`}
 			</label>
 			<input

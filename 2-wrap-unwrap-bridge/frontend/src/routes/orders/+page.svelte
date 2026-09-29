@@ -90,9 +90,9 @@
 							<span class="text-sm font-semibold text-zinc-900 dark:text-white">
 								{#if row.direction === 'pegin'}
 									{presentSatAmount(row.order.amountInSat)}
-									{ecxTicker()} → {amountOut(row.order)} wECX
+									{ecxTicker()} → {amountOut(row.order)} wbECX
 								{:else}
-									{amountIn(row.order)} wECX → {presentSatAmount(row.order.amountOutSat)}
+									{amountIn(row.order)} wbECX → {presentSatAmount(row.order.amountOutSat)}
 									{ecxTicker()}
 								{/if}
 							</span>

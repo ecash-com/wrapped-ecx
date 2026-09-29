@@ -22,7 +22,7 @@ use crate::{convert, db, solana};
 struct AppState {
     ecx: Mutex<ChainWallet>,
     solana: SolanaWallet,
-    db: turso_serverless::Connection,
+    db: db::Connection,
     limits: Limits,
 }
 
@@ -418,7 +418,7 @@ fn payout_viable(amount_in_sat: u64, amount_out_base_units: u64) -> bool {
 /// spending exactly that deposit to fund its own refund is the intended behavior. `None` for a
 /// peg-out payout, which isn't tied to any peg-in order's deposit address at all.
 async fn protected_deposit_outpoints(
-    db_conn: &turso_serverless::Connection,
+    db_conn: &db::Connection,
     wallet: &ChainWallet,
     exclude_order_id: Option<&str>,
 ) -> anyhow::Result<Vec<OutPoint>> {
@@ -1519,7 +1519,7 @@ async fn poll_orders_once(state: &AppState) -> anyhow::Result<()> {
 pub async fn serve(
     ecx: ChainWallet,
     solana: SolanaWallet,
-    db: turso_serverless::Connection,
+    db: db::Connection,
     addr: &str,
 ) -> anyhow::Result<()> {
     let state = Arc::new(AppState {

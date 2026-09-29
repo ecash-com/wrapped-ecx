@@ -321,7 +321,7 @@ async fn main() -> Result<()> {
         Command::Serve { addr } => {
             let ecx_wallet = open_ecx_wallet()?;
             let solana_wallet = open_solana_wallet().await?;
-            let (_db, db_conn) = db::open().await?;
+            let db_conn = db::open().await?;
             server::serve(ecx_wallet, solana_wallet, db_conn, &addr).await?;
         }
     }

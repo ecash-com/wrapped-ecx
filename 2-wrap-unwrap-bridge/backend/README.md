@@ -23,13 +23,13 @@ The ECX wallet is a [BDK](https://bitcoindevkit.org/) wallet derived from a
 BIP39 mnemonic. The Solana treasury is a normal keypair holding an
 already-minted SPL token — this service has no mint or burn authority over
 wECX, only control of its own treasury account. Order state is persisted in
-a [Turso](https://turso.tech/) (libSQL) database.
+a local SQLite database file.
 
 ## Setup
 
 1. Copy `.env.example` to `.env` and fill it in. Every variable is
    documented inline; at minimum you need:
-   - `TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN`
+   - `DATABASE_PATH` (optional, defaults to `data/bridge.db`)
    - `WALLET_MNEMONIC` — a fresh BIP39 mnemonic dedicated to this service.
      Do not reuse a mnemonic that controls funds elsewhere.
    - `SOLANA_KEYPAIR` — base58-encoded 64-byte secret key. Generate one with

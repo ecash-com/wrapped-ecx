@@ -1,6 +1,8 @@
 use anyhow::{Context, Result};
 use bdk_wallet::bitcoin::Amount;
-use turso_serverless::{Builder, Connection, Database};
+use rusqlite::types::{FromSql, Value, ValueRef};
+use rusqlite::Params;
+use std::sync::{Arc, Mutex};
 use uuid::Uuid;
 
 /// `bridge_orders` tracks each ECX->wECX bridge order from creation through payout: the ECX
@@ -106,32 +108,85 @@ fn to_i64(value: u64) -> Result<i64> {
     i64::try_from(value).context("amount does not fit in a signed 64-bit database column")
 }
 
-/// Connects directly to Turso Cloud via `TURSO_DATABASE_URL`/`TURSO_AUTH_TOKEN` and applies the
-/// schema. Deliberately using `turso_serverless` rather than `turso`'s local-embedded-replica
-/// mode: order data involves money, so every write must land durably on Turso Cloud immediately
-/// rather than sitting in a local replica file until something remembers to call `db.push()`.
-pub async fn open() -> Result<(Database, Connection)> {
-    let database_url = std::env::var("TURSO_DATABASE_URL").context(
-        "TURSO_DATABASE_URL must be set - see https://docs.turso.tech/sdk/rust/quickstart",
-    )?;
-    let auth_token = std::env::var("TURSO_AUTH_TOKEN").context(
-        "TURSO_AUTH_TOKEN must be set - see https://docs.turso.tech/sdk/rust/quickstart",
-    )?;
+/// Local SQLite database file, shared by every task through one mutex-guarded connection. The
+/// methods are `async` only so call sites stay uniform; each one takes the lock, runs the
+/// statement synchronously and releases it before returning, so the lock is never held across an
+/// `.await`. Queries are fully buffered into `Rows` for the same reason.
+#[derive(Clone)]
+pub struct Connection(Arc<Mutex<rusqlite::Connection>>);
 
-    let db = Builder::new_remote(database_url)
-        .with_auth_token(auth_token)
-        .build()
-        .await
-        .context("failed to open Turso database")?;
-    let conn = db
-        .connect()
-        .context("failed to connect to Turso database")?;
+pub struct Row(Vec<Value>);
 
+impl Row {
+    pub fn get<T: FromSql>(&self, idx: usize) -> Result<T> {
+        let value = self.0.get(idx).context("column index out of range")?;
+        Ok(T::column_result(ValueRef::from(value))?)
+    }
+}
+
+pub struct Rows(std::vec::IntoIter<Row>);
+
+impl Rows {
+    pub async fn next(&mut self) -> Result<Option<Row>> {
+        Ok(self.0.next())
+    }
+}
+
+impl Connection {
+    fn lock(&self) -> Result<std::sync::MutexGuard<'_, rusqlite::Connection>> {
+        self.0
+            .lock()
+            .map_err(|_| anyhow::anyhow!("database mutex poisoned"))
+    }
+
+    pub async fn execute<P: Params>(&self, sql: &str, params: P) -> Result<usize> {
+        Ok(self.lock()?.execute(sql, params)?)
+    }
+
+    pub async fn execute_batch(&self, sql: &str) -> Result<()> {
+        Ok(self.lock()?.execute_batch(sql)?)
+    }
+
+    pub async fn query<P: Params>(&self, sql: &str, params: P) -> Result<Rows> {
+        let conn = self.lock()?;
+        let mut stmt = conn.prepare(sql)?;
+        let columns = stmt.column_count();
+        let rows = stmt
+            .query_map(params, |row| {
+                (0..columns)
+                    .map(|i| row.get::<_, Value>(i))
+                    .collect::<rusqlite::Result<Vec<_>>>()
+                    .map(Row)
+            })?
+            .collect::<rusqlite::Result<Vec<_>>>()?;
+        Ok(Rows(rows.into_iter()))
+    }
+}
+
+/// Opens (creating if needed) the SQLite file at `DATABASE_PATH` (default `data/bridge.db`) and
+/// applies the schema. WAL + `synchronous = FULL` keeps every committed write durable, since
+/// order data involves money.
+pub async fn open() -> Result<Connection> {
+    let path = std::env::var("DATABASE_PATH").unwrap_or_else(|_| "data/bridge.db".to_string());
+    if let Some(parent) = std::path::Path::new(&path).parent() {
+        if !parent.as_os_str().is_empty() {
+            std::fs::create_dir_all(parent)
+                .with_context(|| format!("failed to create database directory {parent:?}"))?;
+        }
+    }
+
+    let conn = rusqlite::Connection::open(&path)
+        .with_context(|| format!("failed to open SQLite database at {path}"))?;
+    conn.busy_timeout(std::time::Duration::from_secs(5))?;
+    conn.execute_batch("PRAGMA journal_mode = WAL; PRAGMA synchronous = FULL;")
+        .context("failed to configure SQLite")?;
+
+    let conn = Connection(Arc::new(Mutex::new(conn)));
     conn.execute_batch(SCHEMA)
         .await
         .context("failed to apply bridge_orders schema")?;
 
-    Ok((db, conn))
+    Ok(conn)
 }
 
 /// Mirrors the `bridge_order_statuses` lookup table - kept as a Rust enum (rather than comparing
@@ -225,7 +280,7 @@ const ORDER_COLUMNS: &str = "id, amount_in_sat, amount_out_base_units, deposit_a
     solana_recipient, refund_address, status, deposit_txid, payout_signature, refund_txid, \
     created_at, updated_at";
 
-fn row_to_order(row: &turso_serverless::Row) -> Result<Order> {
+fn row_to_order(row: &Row) -> Result<Order> {
     let refund_address: String = row.get(5)?;
     let refund_address = if refund_address.is_empty() {
         None
@@ -684,7 +739,7 @@ const PEGOUT_ORDER_COLUMNS: &str = "id, amount_in_base_units, amount_out_sat, ec
     reference_pubkey, status, deposit_signature, depositor_owner, payout_txid, refund_signature, \
     created_at, updated_at";
 
-fn row_to_pegout_order(row: &turso_serverless::Row) -> Result<PegoutOrder> {
+fn row_to_pegout_order(row: &Row) -> Result<PegoutOrder> {
     Ok(PegoutOrder {
         id: row.get(0)?,
         amount_in_base_units: row.get(1)?,

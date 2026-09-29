@@ -313,6 +313,21 @@
 		<div
 			class="rounded-2xl bg-white p-1 shadow-2xl ring-1 ring-black/5 dark:bg-zinc-900 dark:ring-white/5"
 		>
+			<!-- Wrap / Unwrap toggle -->
+			<div class="mb-1 grid grid-cols-2 gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800/60">
+				{#each [{ value: 'pegin', label: 'Wrap' }, { value: 'pegout', label: 'Unwrap' }] as const as option}
+					<button
+						onclick={() => direction !== option.value && flip()}
+						aria-pressed={direction === option.value}
+						class="rounded-lg py-2 text-sm font-semibold transition-colors {direction === option.value
+							? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-700 dark:text-white'
+							: 'text-zinc-500 hover:text-zinc-900 dark:hover:text-white'}"
+					>
+						{option.label}
+					</button>
+				{/each}
+			</div>
+
 			<!-- From panel -->
 			<div class="rounded-xl bg-zinc-100 p-4 dark:bg-zinc-800/60">
 				{#if direction === 'pegin'}
